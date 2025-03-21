@@ -5,7 +5,8 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, _
 TOKEN = '7756070091:AAG8TcrPW602VVPlAnHU_O5nuwn8OVZSk-c'
 
 # Função que responde ao comando /start
-#Espaço para escrever
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Olá! Eu sou o seu bot do Telegram!")
 
 #Função que responde mensagens comuns
 async def responder(update: Update, context: CallbackContext):
@@ -30,7 +31,7 @@ async def sobre(update: Update, context: CallbackContext):
     await update.message.reply_text('Sou um bot criado em Python! \nMe ajude a crescer dando sugestões!')
 
 # Adicionando comandos ao bot
-app.add_handler(CommandHandler('aujda', ajuda))
+app.add_handler(CommandHandler('ajuda', ajuda))
 app.add_handler(CommandHandler('sobre', sobre))
 
 #Iniciando o bot
