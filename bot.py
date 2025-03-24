@@ -1,5 +1,6 @@
 from flask import Flask
 from threading import Thread
+import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext, ContextTypes
 
@@ -43,8 +44,8 @@ def home():
 
 #Função para iniciaro bot em uma thread separada
 def start_bot():
-    app.run_polling()
-
+    asyncio.run(start_bot())
+    
 #Inicia o bot e o servidor Flask em threads separadas
 Thread(target=start_bot).start()
 
