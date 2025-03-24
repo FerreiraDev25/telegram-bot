@@ -1,3 +1,5 @@
+from flask import Flask
+from threading import Thread
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext, ContextTypes
 
@@ -13,15 +15,6 @@ async def responder(update: Update, context: CallbackContext):
     mensagem = update.message.text
     await update.message.reply_text(f'Olá! Eu sou o seu bot do Telegram! \nEstes são os comandos disponíveis no momento. \n - /start \n - /ajuda \n - /sobre')
 
-# Criando o aplicativo bot
-app = Application.builder().token(TOKEN).build()
-
-#Adicionando comandos
-app.add_handler(CommandHandler('start', start))
-
-#Adicionando respostas para mensagens comuns
-app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, responder))
-
 # Função para exibir ajuda
 async def ajuda(update: Update, context: CallbackContext):
     await update.message.reply_text('Aqui estão os comandos disponíveis:\n/start - Inicia o bot\n/ajuda - mostra este menu\n/sobre - sobre o bot')
@@ -29,11 +22,31 @@ async def ajuda(update: Update, context: CallbackContext):
 # Função para exibir informações sobre o bot
 async def sobre(update: Update, context: CallbackContext):
     await update.message.reply_text('Sou um bot criado em Python! \nMe ajude a crescer dando sugestões!')
+    
+# Criando o aplicativo bot
+app = Application.builder().token(TOKEN).build()
 
-# Adicionando comandos ao bot
+#Adicionando comandos
+app.add_handler(CommandHandler('start', start))
 app.add_handler(CommandHandler('ajuda', ajuda))
 app.add_handler(CommandHandler('sobre', sobre))
 
-#Iniciando o bot
-print('Bot rodando...')
-app.run_polling()
+#Adicionando respostas para mensagens comuns
+app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, responder))
+
+#Função Flask para manter o render funcionando
+flask_app = Flask(__name__)
+
+@flask_app.route('/')
+def home():
+    return "Bot está rodando!"
+
+#Função para iniciaro bot em uma thread separada
+def start_bot():
+    app.run_polling()
+
+#Inicia o bot e o servidor Flask em threads separadas
+Thread(target=start_bot).start()
+
+if __name__ == "__main__"
+    flasl_app.run(host="0.0.0.0", port=8080)
