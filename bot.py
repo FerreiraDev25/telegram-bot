@@ -48,5 +48,5 @@ def start_bot():
 #Inicia o bot e o servidor Flask em threads separadas
 Thread(target=start_bot).start()
 
-if __name__ == "__main__"
+if __name__ == "__main__":
     flasl_app.run(host="0.0.0.0", port=8080)
