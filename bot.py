@@ -42,10 +42,16 @@ flask_app = Flask(__name__)
 def home():
     return "Bot está rodando!"
 
-#Função para iniciaro bot em uma thread separada
-def start_bot():
-    asyncio.run(start_bot())
-    
+#Função para iniciar o bot no asyncio
+async def start_bot():
+    await app.run_polling()
+
+#Função para iniciar o bot em task assíncrona
+def run_bot():
+    loop = asyncio.get_event_loop()
+    loop.create_task(start_bot()) # inicia o bot como uma tarefa assíncrona
+    loop.run_forever() # Garante que o loop de evento continue rodando
+
 #Inicia o bot e o servidor Flask em threads separadas
 Thread(target=start_bot).start()
 
