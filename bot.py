@@ -49,4 +49,4 @@ def start_bot():
 Thread(target=start_bot).start()
 
 if __name__ == "__main__":
-    flasl_app.run(host="0.0.0.0", port=8080)
+    flask_app.run(host="0.0.0.0", port=8080)
