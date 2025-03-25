@@ -1,9 +1,11 @@
 from flask import Flask
 from threading import Thread
 import asyncio
+import time
+import subprocess
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext, ContextTypes
-import subprocess
+
 
 # Seu TOKEN doBotFather aqui!
 TOKEN = '7756070091:AAG8TcrPW602VVPlAnHU_O5nuwn8OVZSk-c'
@@ -73,6 +75,11 @@ def keep_flask_alive():
 
 #Inicia o bot e o servidor Flask em threads separadas
 if __name__ == "__main__":
-    Thread(target=start_bot, daemon=True).start()
-    Thread(target=keep_flask-alive, daemon=True).strat()
-    flask_app.run(host="0.0.0.0", port=8080)
+    flask_thread = Thread(target=flask_app.run, kwargs={"host": "0.0.0.0", "port": 8080}, daemon=True)
+    flask_thread.start()
+
+    # Inicia o bot no thread principal com asyncio
+    asyncio.run(start_bot())
+    
+    # Inicia a thread de ping para manter o serviço ativo
+    Thread(target=keep_flask_alive, daemon=True).start()
